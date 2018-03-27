@@ -1,4 +1,4 @@
-// User.js
+// Book.js
 var mongoose = require('mongoose');
 var BookSchema = new mongoose.Schema({
     title: String,
