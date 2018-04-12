@@ -2,15 +2,15 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
 var Book = require('./book');
 
 // CREATES A NEW BOOK
 router.post('/', function (req, res) {
     Book.create({
-            name : req.body.name,
-            email : req.body.email,
-            password : req.body.password
+            title: req.body.title,
+            pages: req.body.pages,
+            author: req.body.author
         },
         function (err, book) {
             if (err) {
@@ -19,6 +19,7 @@ router.post('/', function (req, res) {
             res.status(200).send(book);
         });
 });
+
 // RETURNS ALL THE BOOKS IN THE DATABASE
 router.get('/', function (req, res) {
     Book.find({}, function (err, books) {
@@ -29,6 +30,7 @@ router.get('/', function (req, res) {
     });
 });
 
+
 // GETS A SINGLE BOOK FROM THE DATABASE
 router.get('/:id', function (req, res) {
     Book.findById(req.params.id, function (err, book) {
@@ -37,12 +39,11 @@ router.get('/:id', function (req, res) {
         res.status(200).send(book);
     });
 });
-
 // DELETES A BOOK FROM THE DATABASE
 router.delete('/:id', function (req, res) {
     Book.findByIdAndRemove(req.params.id, function (err, book) {
         if (err) return res.status(500).send("There was a problem deleting the book.");
-        res.status(200).send("Book: "+ book.name +" was deleted.");
+        res.status(200).send("Book: " + book.title + " was deleted.");
     });
 });
 
