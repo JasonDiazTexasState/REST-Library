@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 router.use(bodyParser.json());
 var Book = require('./book');
 
+
 // CREATES A NEW BOOK
 router.post('/', function (req, res) {
     Book.create({
@@ -46,7 +47,13 @@ router.delete('/:id', function (req, res) {
         res.status(200).send("Book: " + book.title + " was deleted.");
     });
 });
-
+// DELETES A BOOK FROM THE DATABASE
+router.delete('/', function (req, res) {
+    Book.remove(function (err, book) {
+        if (err) return res.status(500).send("There was a problem deleting the book.");
+        res.status(200).send("Book: " + book.title + " was deleted.");
+    });
+});
 // UPDATES A SINGLE BOOK IN THE DATABASE
 router.put('/:id', function (req, res) {
     Book.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, book) {
